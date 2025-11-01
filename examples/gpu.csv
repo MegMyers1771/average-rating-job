@@ -1,0 +1,11 @@
+name,brand,price,rating
+GeForce GTX 1070, NVIDIA,100,4.1
+GeForce RTX 3060, NVIDIA,150,4.4
+GeForce RTX 4070, NVIDIA,500,4.6
+GeForce RTX 5050, NVIDIA,350,4.9
+Radeon RX 580, AMD,70,3.8
+Radeon RX 6600, AMD,150,4.3
+Radeon RX 6700 XT, AMD,250,4.6
+Radeon RX 7900 XTX, AMD,450,4.9
+Arc A580, Intel,200,3.7
+Arc A770, Intel,350,4.1
