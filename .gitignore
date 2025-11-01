@@ -1,1 +1,2 @@
-.aenv/
+.avgenv/
+__pycache__/
