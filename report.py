@@ -3,7 +3,6 @@ import csv
 from typing import List, Dict 
 
 TDictReader = csv.DictReader
-TRateType = tuple[int | str, str, float | str]
 TLaptopsDict = Dict[str, List[tuple[str, float]]]
 TLaptopsSortedList = Dict[str, List[List]]
 
