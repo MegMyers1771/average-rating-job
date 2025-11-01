@@ -51,29 +51,29 @@ def test_read_csv_empty_file(tmp_path):
 
 def test_create_rate_dict_valid_data(tmp_csv_file):
     parser = Parser()
-    laptops = parser.create_rate_dict(tmp_csv_file)
-    assert "Apple" in laptops.keys()
-    assert "Lenovo" in laptops.keys()
-    assert isinstance(laptops["Apple"][0], tuple)
-    assert laptops["Apple"][0][1] == pytest.approx(4.6, 0.01)
-    assert len(laptops) == 6  # все бренды из файла
+    csv_data = parser.create_rate_dict(tmp_csv_file)
+    assert "Apple" in csv_data.keys()
+    assert "Lenovo" in csv_data.keys()
+    assert isinstance(csv_data["Apple"][0], tuple)
+    assert csv_data["Apple"][0][1] == pytest.approx(4.6, 0.01)
+    assert len(csv_data) == 6  # все бренды из файла
 
 
 def test_create_rate_dict_with_invalid_rating(tmp_path, capsys):
     f = tmp_path / "bad.csv"
     f.write_text("name,brand,price,rating\nModel,HP,1300,abc\n", encoding="utf-8")
     parser = Parser()
-    laptops = parser.create_rate_dict(str(f))
+    csv_data = parser.create_rate_dict(str(f))
     out = capsys.readouterr().out
     assert "Error reading rating" in out
-    assert laptops == {"HP": []}
+    assert csv_data == {"HP": []}
 
 
 def test_create_rate_dict_file_not_found(capsys):
     parser = Parser()
-    laptops = parser.create_rate_dict("nonexistent.csv")
+    csv_data = parser.create_rate_dict("nonexistent.csv")
     out = capsys.readouterr().out
-    assert laptops == {}
+    assert csv_data == {}
     assert "File not found" in out
 
 
@@ -81,5 +81,5 @@ def test_create_rate_dict_empty_file(tmp_path):
     f = tmp_path / "empty.csv"
     f.write_text("", encoding="utf-8")
     parser = Parser()
-    laptops = parser.create_rate_dict(str(f))
-    assert laptops == {}
+    csv_data = parser.create_rate_dict(str(f))
+    assert csv_data == {}

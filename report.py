@@ -3,8 +3,8 @@ import csv
 from typing import List, Dict 
 
 TDictReader = csv.DictReader
-TLaptopsDict = Dict[str, List[tuple[str, float]]]
-TLaptopsSortedList = Dict[str, List[List]]
+CSVDataDict = Dict[str, List[tuple[str, float]]]
+CSVDataList = Dict[str, List[List]]
 
 from pprint import pprint
     
@@ -33,7 +33,7 @@ class ReportGenerator:
         # форматируем строку на основе максимальной длины
         return '|' + '|'.join(f' {str(row[i]).ljust(col_widths[i])} ' for i in range(len(self._header))) + '|'
     
-    def add(self, file_path: str, data: TLaptopsDict):
+    def add(self, file_path: str, data: CSVDataDict):
         avg_rate_dict = {}
         
         # создаем словарь {brand: avg_rate}
@@ -79,7 +79,7 @@ class Parser(argparse.ArgumentParser):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.add_argument("--files", nargs='+', required=True, help="The paths to files with ratings")
-        self.add_argument("--report", type=str, default="Main report", help="report average rating of laptops")
+        self.add_argument("--report", type=str, default="Main report", help="Report average rating of data")
     
     def _read_csv(self, file_path) -> List[dict[str, str]] | None:
         # Функция для чтения csv файлов
@@ -94,10 +94,10 @@ class Parser(argparse.ArgumentParser):
             print(f"File not found: {file_path}")
             return None
 
-    def create_rate_dict(self, file_path) -> TLaptopsDict:
+    def create_rate_dict(self, file_path) -> CSVDataDict:
         
-        # Создаем словарь с брэндами ноутбуков
-        laptops: TLaptopsDict = {}
+        # Создаем словарь с брэндами
+        csv_dict: CSVDataDict = {}
         
         # Читаем csv файл и получаем ридер
         csv_data = self._read_csv(file_path)
@@ -107,14 +107,14 @@ class Parser(argparse.ArgumentParser):
         
         for row in csv_data:
             # Создаем ключ брэнда в словаре, если он инициализирующий
-            if row['brand'] not in laptops.keys():
-                laptops[row['brand']] = []
+            if row['brand'] not in csv_dict.keys():
+                csv_dict[row['brand']] = []
             
             # Добавляем элемент с моделью с рейтингом
             
             try:
                 row_rating = float(row['rating'])
-                laptops[row['brand']].append(
+                csv_dict[row['brand']].append(
                     (row['name'], row_rating)
                 )
                 
@@ -122,7 +122,7 @@ class Parser(argparse.ArgumentParser):
                 print(f"Error reading rating for {row['name']}: {row['rating']}")
         
         
-        return laptops
+        return csv_dict
 
 
         
